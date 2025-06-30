@@ -21,7 +21,7 @@ def subscribe():
     # Send email to Service Bus
     with ServiceBusClient.from_connection_string(SERVICE_BUS_CONN_STR) as client:
         with client.get_queue_sender(QUEUE_NAME) as sender:
-            message = ServiceBusMessage(json.dumps({"email": request.form['email']}))
+            message = ServiceBusMessage(json.dumps({"email": request.form['email'], "type": "subscription"}))
             sender.send_messages(message)
 
     return "Subscription successful!", 200
