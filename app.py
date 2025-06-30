@@ -29,4 +29,4 @@ def subscribe():
 
 
 if __name__ == '__main__':
-    app.run(ssl_context='adhoc' if os.getenv('FLASK_ENV') == 'development' else None)
+    app.run()
