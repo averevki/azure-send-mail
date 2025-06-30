@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 from azure.servicebus import ServiceBusClient, ServiceBusMessage
 import os
+import json
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,12 +18,10 @@ def index():
 
 @app.route('/subscribe', methods=['POST'])
 def subscribe():
-    email = request.form['email']
-
     # Send email to Service Bus
     with ServiceBusClient.from_connection_string(SERVICE_BUS_CONN_STR) as client:
         with client.get_queue_sender(QUEUE_NAME) as sender:
-            message = ServiceBusMessage(email)
+            message = ServiceBusMessage(json.dumps({"email": request.form['email']}))
             sender.send_messages(message)
 
     return "Subscription successful!", 200
